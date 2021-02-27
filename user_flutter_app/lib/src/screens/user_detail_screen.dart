@@ -44,7 +44,7 @@ class UserDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
                     padding: const EdgeInsets.only(top: 10),
@@ -55,6 +55,8 @@ class UserDetailScreen extends StatelessWidget {
                     ),
                   ),
                   Divider(
+                    indent: 70,
+                    endIndent: 70,
                     color: Theme.of(context).primaryColor,
                   ),
                   Container(

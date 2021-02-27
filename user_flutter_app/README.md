@@ -1,6 +1,6 @@
 # user_flutter_app
 
-Fraktons test project for getting a list of users from an api.
+Arjanit Kotorri - "User Manager" test project given by Fracton.
 
 ## Getting Started
 
