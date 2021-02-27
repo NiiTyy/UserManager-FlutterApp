@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UserModel with ChangeNotifier {
-  final String id;
+  final int id;
   final String email;
   final String firstName;
   final String lastName;
@@ -17,7 +17,7 @@ class UserModel with ChangeNotifier {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'].toString(),
+      id: json['id'],
       email: json['email'].toString(),
       firstName: json['first_name'].toString(),
       lastName: json['last_name'].toString(),

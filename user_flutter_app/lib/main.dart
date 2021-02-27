@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:user_flutter_app/src/providers/user_provider.dart';
-import 'package:user_flutter_app/src/screens/user_detail_screen.dart';
 
+import './src/models/user_model.dart';
+import './src/providers/user_provider.dart';
+import './src/screens/user_detail_screen.dart';
 import './src/screens/dashboard_screen.dart';
 
 void main() {

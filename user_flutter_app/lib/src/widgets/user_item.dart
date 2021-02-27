@@ -35,10 +35,13 @@ class UserItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(user.avatar),
-                      radius: 30,
-                      // child: Image.network(user.avatar),
+                    leading: Hero(
+                      tag: user.avatar,
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(user.avatar),
+                        radius: 30,
+                        // child: Image.network(user.avatar),
+                      ),
                     ),
                     title: Text(user.firstName + ' ' + user.lastName),
                   ),

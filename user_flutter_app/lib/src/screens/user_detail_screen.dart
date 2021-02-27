@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/user_model.dart';
 import '../providers/user_provider.dart';
 
-class UserDetailScreen extends StatefulWidget {
+class UserDetailScreen extends StatelessWidget {
+  final TransformationController _transformationController =
+      TransformationController();
   static const routeName = '/user-detail-screen';
-
-  @override
-  _UserDetailScreenState createState() => _UserDetailScreenState();
-}
-
-class _UserDetailScreenState extends State<UserDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    final userId = ModalRoute.of(context).settings.arguments as String;
-    var currentIndex = double.parse(userId);
+    final usersList = Provider.of<UserProvider>(context).usersList;
+    final userId = ModalRoute.of(context).settings.arguments;
     final selectedUser =
         Provider.of<UserProvider>(context, listen: false).findUserById(userId);
     return Scaffold(
@@ -22,77 +19,97 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
         title: Text(selectedUser.firstName + ' ' + selectedUser.lastName),
         centerTitle: true,
       ),
-      body: ListView(
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Hero(
+              tag: selectedUser.avatar,
+              child: Container(
                 height: 300.0,
-                child: GridTile(
-                  child: Container(
-                    color: Theme.of(context).accentColor,
-                    child: InteractiveViewer(
-                      child: Image.network(
-                        selectedUser.avatar,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                color: Theme.of(context).accentColor,
+                child: InteractiveViewer(
+                  transformationController: _transformationController,
+                  onInteractionEnd: (details) {
+                    _transformationController.value = Matrix4.identity();
+                  },
+                  child: Image.network(
+                    selectedUser.avatar,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        "Email",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15.0),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      "Email",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.0),
+                    ),
+                  ),
+                  Divider(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Text(
+                      selectedUser.email,
+                      style: new TextStyle(
+                        fontSize: 14.0,
                       ),
+                      textAlign: TextAlign.left,
                     ),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Text(
-                        selectedUser.email,
-                        style: new TextStyle(
-                          fontSize: 14.0,
-                        ),
-                        textAlign: TextAlign.left,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.navigate_before),
+                        onPressed: () {
+                          var previousUser = selectedUser.id - 1;
+
+                          if (previousUser <= 0) {
+                            previousUser = selectedUser.id;
+                          } else {
+                            Navigator.of(context).pushReplacementNamed(
+                              UserDetailScreen.routeName,
+                              arguments: previousUser,
+                            );
+                          }
+                        },
                       ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.navigate_before),
-                          onPressed: () {
-                            setState(() {
-                              currentIndex++;
-                            });
-                          },
-                        ),
-                        Text(currentIndex.toString()),
-                        IconButton(
-                            icon: Icon(Icons.navigate_next), onPressed: null),
-                      ],
-                    ),
-                  ],
-                ),
+                      Text(selectedUser.id.toString()),
+                      IconButton(
+                        icon: Icon(Icons.navigate_next),
+                        onPressed: () {
+                          var nextUser = selectedUser.id + 1;
+                          if (nextUser > usersList.length) {
+                            nextUser = selectedUser.id;
+                          } else {
+                            Navigator.of(context).pushReplacementNamed(
+                              UserDetailScreen.routeName,
+                              arguments: nextUser,
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  )
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
