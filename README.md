@@ -1,3 +1,3 @@
-# UserManagerFractonsTest
-Arjanit Kotorri - "User Manager" test project given by Fracton.
+# UserManager
+Arjanit Kotorri - "User Manager" a simple User Manager app made with Flutter.
 
